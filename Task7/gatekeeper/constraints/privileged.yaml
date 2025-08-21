@@ -1,0 +1,10 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sNorequiredPrivileged
+metadata:
+  name: no-privileged-containers
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces: ["audit-zone"]

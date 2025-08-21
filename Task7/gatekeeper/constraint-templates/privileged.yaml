@@ -1,0 +1,25 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8snorequiredprivileged
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sNorequiredPrivileged
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            message:
+              type: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8snorequiredprivileged
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          container.securityContext.privileged == true
+          msg := sprintf("%v privileged: true", [container.name])
+        }
