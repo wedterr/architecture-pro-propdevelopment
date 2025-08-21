@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-pod
+  namespace: audit-zone
+spec:
+  containers:
+    - name: hostpath-pod
+      image: nginx
+      volumeMounts:
+        - name: host
+          mountPath: /host
+  volumes:
+    - name: host
+      hostPath:
+        path: /var/lib/docker
+        type: Directory
